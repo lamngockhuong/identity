@@ -11,7 +11,7 @@ import java.io.File;
 
 public class SpringWebApplicationInitializer implements WebApplicationInitializer {
 
-    private int MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+    private int MAX_UPLOAD_SIZE = 10 * 1024 * 1024;
 
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
