@@ -4,6 +4,7 @@ import com.ngockhuong.identity.config.Route;
 import com.ngockhuong.identity.model.Profile;
 import com.ngockhuong.identity.model.Social;
 import com.ngockhuong.identity.service.ProfileService;
+import com.ngockhuong.identity.util.ImageUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -73,24 +74,34 @@ public class PanelController extends AbstractController {
         BindingResult result,
         ModelMap model
     ) {
+        // Check if robot
+        if ("1".equals(robot)) {
+            return "redirect:" + Route.cpanel;
+        }
+
         // Prepare and upload the avatar
         String filename = file.getOriginalFilename();
-        String avatarDirPath = env.getProperty("avatarDirPath");
-        String dirPath = request.getServletContext().getRealPath(avatarDirPath);
-        String avatar = env.getProperty("defaultAvatarName") + "." + FilenameUtils.getExtension(filename).toLowerCase();
-        File dirFile = new File(dirPath);
-
-        if (!dirFile.exists()) {
-            dirFile.mkdirs();
-        }
-
-        try {
-            file.transferTo(new File(dirPath + File.separator + avatar));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String avatar = "";
 
         if (!filename.isEmpty()) {
+            String avatarDirPath = env.getProperty("avatarDirPath");
+            String dirPath = request.getServletContext().getRealPath(avatarDirPath);
+            avatar = env.getProperty("defaultAvatarName") + "." + FilenameUtils.getExtension(filename).toLowerCase();
+            File dirFile = new File(dirPath);
+
+            if (!dirFile.exists()) {
+                dirFile.mkdirs();
+            }
+
+            try {
+                // Save origin image
+                // file.transferTo(new File(dirPath + File.separator + avatar));
+                // Save thumnail image
+                avatar = ImageUtil.generateThumbnail(file.getBytes(), avatar, dirPath, 122, 122);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             avatar = avatarDirPath + "/" + avatar;
         } else {
             avatar = env.getProperty("defaultAvatar");

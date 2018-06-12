@@ -1,3 +1,7 @@
 input, textarea {
     text-transform: none !important;
 }
+
+.avatar {
+    cursor: pointer;
+}
