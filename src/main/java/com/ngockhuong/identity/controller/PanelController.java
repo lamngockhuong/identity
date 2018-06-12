@@ -46,12 +46,14 @@ public class PanelController extends AbstractController {
             profile = new Profile();
         }
 
+        // Init social
         Social social = profile.getSocial();
 
         if (social == null) {
             social = new Social();
         }
 
+        // Prepare social data for the form
         String socials = social.toFormList();
 
         ModelAndView modelAndView = new ModelAndView("cpanel");
@@ -71,6 +73,7 @@ public class PanelController extends AbstractController {
         BindingResult result,
         ModelMap model
     ) {
+        // Prepare and upload the avatar
         String filename = file.getOriginalFilename();
         String avatarDirPath = env.getProperty("avatarDirPath");
         String dirPath = request.getServletContext().getRealPath(avatarDirPath);
@@ -93,15 +96,19 @@ public class PanelController extends AbstractController {
             avatar = env.getProperty("defaultAvatar");
         }
 
+        // Preprocessing social data
         socials = socials.replaceAll(":", "=")
                 .replaceAll("'", "");
 
         try {
+            // Profile data
             Social social = new Social();
             social.getFromProperties(socials);
 
             profile.setSocial(social);
             profile.setAvatar(avatar);
+
+            // Save profile data to json file
             service.saveProfile(request, profile);
         } catch (IOException e) {
             e.printStackTrace();
