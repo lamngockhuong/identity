@@ -15,7 +15,8 @@ public class ProfileService {
     private static final String dataFileName = "profile.json";
 
     public Profile getProfile(HttpServletRequest request) throws IOException {
-        String path = request.getServletContext().getRealPath("data");
+        String path = "/app/data";
+//        String path = request.getServletContext().getRealPath("data");
         File dirFile = new File(path);
 
         if (!dirFile.exists()) {
@@ -36,7 +37,8 @@ public class ProfileService {
     }
 
     public void saveProfile(HttpServletRequest request, Profile profile) throws IOException {
-        String path = request.getServletContext().getRealPath("data");
+        String path = "/app/data";
+//        String path = request.getServletContext().getRealPath("data");
         File dirFile = new File(path);
 
         if (!dirFile.exists()) {

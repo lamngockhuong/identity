@@ -85,7 +85,8 @@ public class PanelController extends AbstractController {
 
         if (!filename.isEmpty()) {
             String avatarDirPath = env.getProperty("avatarDirPath");
-            String dirPath = request.getServletContext().getRealPath(avatarDirPath);
+            String dirPath = "/app" + avatarDirPath;
+//            String dirPath = request.getServletContext().getRealPath(avatarDirPath);
             avatar = env.getProperty("defaultAvatarName") + "." + FilenameUtils.getExtension(filename).toLowerCase();
             File dirFile = new File(dirPath);
 
